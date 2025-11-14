@@ -1,0 +1,38 @@
+import React from 'react';
+
+export type IconType = 
+  | 'journal' | 'chat' | 'insights' | 'logo' | 'send' | 'delete' | 'loading'
+  | 'moodHappy' | 'moodExcited' | 'moodCalm' | 'moodSad' | 'moodAnxious' | 'moodTired' | 'moodNeutral';
+
+interface IconProps {
+  name: IconType;
+  className?: string;
+}
+
+const Icon: React.FC<IconProps> = ({ name, className }) => {
+  // Fix for: Cannot find namespace 'JSX'.
+  const icons: Record<IconType, React.ReactElement> = {
+    journal: <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />,
+    chat: <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.761 9.761 0 01-2.542-.381 4.47 4.47 0 01-1.998.001A9.703 9.703 0 013 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" />,
+    insights: <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-3.94-3.94m3.94 3.94l-3.94 3.94" />,
+    logo: <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />, // Simplified as a plus sign
+    send: <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />,
+    delete: <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />,
+    loading: <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0011.667 0l3.182-3.182m0 0h-4.992" />,
+    moodHappy: <path strokeLinecap="round" strokeLinejoin="round" d="M15.182 15l-1.14-1.425a11.956 11.956 0 01-1.84 1.84l1.425 1.14m1.84-1.84l.879.879m-12.728 0l.879-.879M12 21a9 9 0 110-18 9 9 0 010 18zM12 9.75h.008v.008H12V9.75z" />,
+    moodExcited: <path strokeLinecap="round" strokeLinejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.63 2.18a14.98 14.98 0 00-5.84 7.38m5.84 2.58a14.98 14.98 0 00-6.16 12.12A14.98 14.98 0 009.63 21.82a14.98 14.98 0 005.84-7.38m-5.84 0a6 6 0 01-5.84-7.38v4.8m5.84 2.58v-4.8" />,
+    moodCalm: <path strokeLinecap="round" strokeLinejoin="round" d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4-2.245 4.5 4.5 0 118.9-2.245c.342.066.666.142.956.241a3 3 0 00-4.661 3.111zM16.5 21a3 3 0 005.78-1.128 2.25 2.25 0 012.4-2.245 4.5 4.5 0 11-8.9 2.245c-.342-.066-.666-.142-.956-.241a3 3 0 004.66-3.111z" />,
+    moodSad: <path strokeLinecap="round" strokeLinejoin="round" d="M18 12H6m6 6a9 9 0 110-18 9 9 0 010 18zM9 9h.008v.008H9V9zm6 0h.008v.008H15V9z" />,
+    moodAnxious: <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.5 13.5L18 15.75l1.5-2.25L21 13.5l-1.5-2.25L18 9l-1.5 2.25L15 13.5z" />,
+    moodTired: <path strokeLinecap="round" strokeLinejoin="round" d="M12 9.75L14.25 12m0 0l2.25 2.25M14.25 12l2.25-2.25M14.25 12L12 14.25m-2.58-4.42v.007a2.387 2.387 0 01-.01-4.758a9.75 9.75 0 0115.08-2.066 9.75 9.75 0 01-3.926 9.066" />,
+    moodNeutral: <path strokeLinecap="round" strokeLinejoin="round" d="M12 12h.008v.008H12V12zm0 0h.008v.008H12V12zm0 0h.008v.008H12V12zm0 0h.008v.008H12V12zM12 21a9 9 0 110-18 9 9 0 010 18zM9 9.75h.008v.008H9V9.75zm6 0h.008v.008H15V9.75z" />,
+  };
+
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
+      {icons[name]}
+    </svg>
+  );
+};
+
+export default Icon;

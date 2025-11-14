@@ -1,0 +1,61 @@
+
+import React, { useState } from 'react';
+import { JournalEntry, ChatMessage, View } from './types';
+import useLocalStorage from './hooks/useLocalStorage';
+import Header from './components/Header';
+import JournalEntryForm from './components/JournalEntryForm';
+import JournalList from './components/JournalList';
+import ChatInterface from './components/ChatInterface';
+import InsightsPanel from './components/InsightsPanel';
+
+const App: React.FC = () => {
+  const [journalEntries, setJournalEntries] = useLocalStorage<JournalEntry[]>('journalEntries', []);
+  const [chatMessages, setChatMessages] = useLocalStorage<ChatMessage[]>('chatMessages', []);
+  const [currentView, setCurrentView] = useState<View>(View.Journal);
+
+  const addJournalEntry = (entry: Omit<JournalEntry, 'id' | 'date'>) => {
+    const newEntry: JournalEntry = {
+      ...entry,
+      id: new Date().toISOString(),
+      date: new Date().toISOString(),
+    };
+    setJournalEntries([newEntry, ...journalEntries]);
+    setCurrentView(View.Journal); // Switch to journal list after adding
+  };
+  
+  const deleteJournalEntry = (id: string) => {
+    setJournalEntries(journalEntries.filter(entry => entry.id !== id));
+  };
+
+  const renderContent = () => {
+    switch (currentView) {
+      case View.Journal:
+        return (
+          <div className="space-y-6">
+            <JournalEntryForm addJournalEntry={addJournalEntry} />
+            <JournalList entries={journalEntries} onDelete={deleteJournalEntry} />
+          </div>
+        );
+      case View.Chat:
+        return <ChatInterface messages={chatMessages} setMessages={setChatMessages} />;
+      case View.Insights:
+        return <InsightsPanel entries={journalEntries} />;
+      default:
+        return <JournalList entries={journalEntries} onDelete={deleteJournalEntry} />;
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300">
+      <Header currentView={currentView} setCurrentView={setCurrentView} />
+      <main className="container mx-auto max-w-4xl p-4 md:p-6">
+        {renderContent()}
+      </main>
+      <footer className="text-center py-4 text-xs text-slate-400 dark:text-slate-600">
+        <p>EmoJournal AI Diary. Your thoughts are your own.</p>
+      </footer>
+    </div>
+  );
+};
+
+export default App;

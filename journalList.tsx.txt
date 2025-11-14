@@ -1,0 +1,67 @@
+
+import React from 'react';
+import { JournalEntry } from '../types';
+import { MOOD_OPTIONS } from '../constants';
+import Icon from './Icon';
+
+interface JournalListProps {
+  entries: JournalEntry[];
+  onDelete: (id: string) => void;
+}
+
+const JournalList: React.FC<JournalListProps> = ({ entries, onDelete }) => {
+  if (entries.length === 0) {
+    return (
+      <div className="text-center py-10 px-6 bg-white dark:bg-slate-800 rounded-lg shadow-md">
+        <Icon name="journal" className="mx-auto w-12 h-12 text-slate-400 dark:text-slate-500" />
+        <h3 className="mt-2 text-lg font-medium text-slate-800 dark:text-slate-100">No Journal Entries Yet</h3>
+        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Start by writing about your day above.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100">Your Entries</h2>
+      {entries.map(entry => {
+        const moodInfo = MOOD_OPTIONS.find(m => m.mood === entry.mood);
+        return (
+          <div key={entry.id} className="bg-white dark:bg-slate-800 p-5 rounded-lg shadow-md relative group">
+             <button
+              onClick={() => onDelete(entry.id)}
+              className="absolute top-3 right-3 p-1 rounded-full text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 opacity-0 group-hover:opacity-100 transition-opacity"
+              aria-label="Delete entry"
+            >
+              <Icon name="delete" className="w-4 h-4" />
+            </button>
+            <div className="flex items-start space-x-4">
+              <div className="flex-shrink-0">
+                {moodInfo && <Icon name={moodInfo.icon} className={`w-8 h-8 ${moodInfo.color} ${moodInfo.darkColor}`} />}
+              </div>
+              <div className="flex-1">
+                <div className="flex items-baseline justify-between">
+                  <p className="text-sm font-semibold text-indigo-600 dark:text-indigo-400">{entry.mood}</p>
+                  <p className="text-xs text-slate-400 dark:text-slate-500">
+                    {new Date(entry.date).toLocaleString()}
+                  </p>
+                </div>
+                <p className="mt-2 text-slate-700 dark:text-slate-300 whitespace-pre-wrap">{entry.text}</p>
+                {entry.activities.length > 0 && (
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {entry.activities.map(activity => (
+                      <span key={activity} className="px-2 py-1 bg-slate-100 dark:bg-slate-700 text-xs font-medium text-slate-600 dark:text-slate-300 rounded-full">
+                        {activity}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+export default JournalList;
